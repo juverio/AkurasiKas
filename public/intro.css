@@ -1,0 +1,155 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url("./assets/foto2.jpg");
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.forms {
+    padding: 30px;
+}
+
+/* Header Styling */
+header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+.field {
+    margin-bottom: 20px;
+    position: relative; /* Posisi relatif untuk kontrol child */
+}
+
+.input {
+    width: 100%;
+    padding: 12px 40px 12px 15px; /* Tambahkan ruang di kanan untuk ikon */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Password Visibility Icon */
+.eye-icon {
+    position: absolute;
+    top: 50%; /* Pastikan ikon sejajar vertikal dengan input */
+    right: 15px; /* Jarak ikon dari sisi kanan */
+    transform: translateY(-50%); /* Pusatkan ikon vertikal */
+    font-size: 18px;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.eye-icon:hover {
+    color: #007bff;
+}
+
+/* Buttons */
+.button-field {
+    text-align: center;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Links */
+.form-link {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.form-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.form-link a:hover {
+    text-decoration: underline;
+}
+
+/* Forgot Password Link */
+.forgot-pass {
+    display: block;
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    padding: 12px;
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.forgot-pass:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    header {
+        font-size: 20px;
+    }
+
+    .input {
+        font-size: 13px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    .form-link {
+        font-size: 13px;
+    }
+}
