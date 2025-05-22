@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaksi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/transaction.css">
+    <script defer src="/transaction.js"></script>
+</head>
+
+<body>
+    <!-- Menu Toggle Button -->
+    <button class="menu-toggle" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <img src="./assets/logo1.jpg" alt="Akurasikas Logo">
+            </div>
+            <nav>
+                <a href="/dashboard">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="/transaction" class="active">
+                    <i class="fas fa-exchange-alt"></i>
+                    Transaksi
+                </a>
+                <a href="/inventori">
+                    <i class="fas fa-box"></i>
+                    Inventori
+                </a>
+                <a href="/laporan">
+                    <i class="fas fa-file-alt"></i>
+                    Laporan
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/help">
+                    <i class="fas fa-question-circle"></i>
+                    Help Center
+                </a>
+                <a href="/settings">
+                    <i class="fas fa-cog"></i>
+                    Pengaturan
+                </a>
+            </div>
+        </div>
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header>
+                <h2>Transaksi</h2>
+                <div class="header-right">
+                    <div class="search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Cari Sesuatu">
+                    </div>
+                    <i class="fas fa-bell"></i>
+                    <div class="user-profile" id="user-profile">
+                        <img src="/assets/profile-user.png" alt="User Avatar">
+                        <div>
+                            <p class="username">Vinte</p>
+                            <p class="role">Akunting</p>
+                        </div>
+
+                        <!-- Dropdown Menu -->
+                        <div class="profile-dropdown-menu">
+                            <a href="/profile"><i class="fas fa-user"></i> Profil</a>
+                            <a href="/"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <main>
+                <!-- Transaction Filter Section -->
+                <div class="transaction-controls">
+                    <div class="transaction-type">
+                        <button class="btn-primary dropdown-toggle">
+                            Pembelian <i class="fas fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#">Pembelian</a>
+                            <a href="#">Penjualan</a>
+                        </div>
+                    </div>
+
+                    <div class="date-filter">
+                        <div class="filter-buttons">
+                            <button class="btn-icon"><i class="fas fa-filter"></i></button>
+                        </div>
+                        <div class="date-inputs">
+                            <div class="date-field">
+                                <input type="date" placeholder="dd/mm/yyyy" class="date-input">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <span class="date-separator">-</span>
+                            <div class="date-field">
+                                <input type="date" placeholder="dd/mm/yyyy" class="date-input">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-secondary">
+                            <i class="fas fa-download"></i> Unduh
+                        </button>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i> Transaksi
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Transaction Table -->
+                <div class="transaction-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="checkbox-col"><input type="checkbox" id="select-all"></th>
+                                <th>Kode</th>
+                                <th>Tanggal</th>
+                                <th>Nama</th>
+                                <th>Nilai Transaksi</th>
+                                <th>Status Pengiriman <i class="fas fa-sort"></i></th>
+                                <th class="action-col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT69303</td>
+                                <td>02-May-2024</td>
+                                <td>Toko Pita 1</td>
+                                <td>Rp 45.000</td>
+                                <td><span class="status on-the-way">On The Way</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT20061</td>
+                                <td>02-May-2024</td>
+                                <td>Toko Pita 1</td>
+                                <td>Rp 35.000</td>
+                                <td><span class="status problem">Problem</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                            <tr class="selected-row">
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT87861</td>
+                                <td>01-May-2024</td>
+                                <td>Toko Pita 1</td>
+                                <td>Rp 106.000</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                            <tr class="selected-row">
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT21672</td>
+                                <td>01-May-2024</td>
+                                <td>Toko Manik 1</td>
+                                <td>Rp 223.000</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                            <tr class="selected-row">
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT21672</td>
+                                <td>01-May-2024</td>
+                                <td>Toko Manik 1</td>
+                                <td>Rp 55.000</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                            <tr class="selected-row">
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT21672</td>
+                                <td>01-May-2024</td>
+                                <td>Import China</td>
+                                <td>Rp 55.000</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                            <tr class="selected-row">
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT21672</td>
+                                <td>01-May-2024</td>
+                                <td>Import China</td>
+                                <td>Rp 55.000</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                            <tr class="selected-row">
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT21672</td>
+                                <td>01-May-2024</td>
+                                <td>Aling</td>
+                                <td>Rp 55.000</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                            <tr class="selected-row">
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT21672</td>
+                                <td>01-May-2024</td>
+                                <td>Aling</td>
+                                <td>Rp 55.000</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                            <tr class="selected-row">
+                                <td><input type="checkbox" class="row-checkbox"></td>
+                                <td>JT21672</td>
+                                <td>01-May-2024</td>
+                                <td>Toko Pita 2</td>
+                                <td>Rp 55.000</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="pagination-arrow"><i class="fas fa-chevron-left"></i></button>
+                    <button class="pagination-number active">1</button>
+                    <button class="pagination-number">2</button>
+                    <button class="pagination-number">3</button>
+                    <button class="pagination-number">4</button>
+                    <button class="pagination-number">5</button>
+                    <button class="pagination-number">6</button>
+                    <button class="pagination-arrow"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <img src="./assets/logo1.jpg" alt="AkurasiKas Logo" class="footer-logo">
+                <p class="footer-text">
+                    Solusi terintegrasi untuk memantau pendapatan, pengeluaran, dan stok barang secara
+                    real-time. Kami
+                    menyediakan manajemen keuangan yang lebih baik dengan data akurat, tanpa kerumitan.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h5 class="footer-text-title">Alamat</h5>
+                <p class="footer-contact">
+                    📍 Jl. Jalan Thamrin No. 140 Medan - 20212
+                </p>
+                <h5 class="footer-text-title">Kontak</h5>
+                <p class="footer-contact">
+                    📞 0812-1234-5678 <br>
+                    📧 cs.akurasi@gmail.com <br>
+                    📷 @akurasi
+                </p>
+            </div>
+            <div class="footer-col">
+                <h5 class="footer-text-title">Perusahaan</h5>
+                <p class="footer-links">
+                    <a href="#">Tentang AkurasiKas</a>
+                    <a href="#">FAQ</a>
+                </p>
+                <h5 class="footer-text-title">Legal</h5>
+                <p class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 AkurasiKas | Semua Hak Dilindungi</p>
+        </div>
+    </footer>
+</body>
+
+</html>

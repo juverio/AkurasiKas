@@ -1,0 +1,387 @@
+/* Base styles - already provided */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+    background-color: #fff;
+}
+
+.navbar-nav .nav-link {
+    color: #000;
+    font-weight: 500;
+    margin: 0 15px;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #007bff;
+}
+
+/* Footer styles - already provided */
+.footer {
+    padding: 40px 0;
+}
+
+.footer h5 {
+    color: #1472ff;
+    font-weight: 700;
+}
+
+.footer .footer-logo {
+    max-width: 150px;
+}
+
+.footer .footer-text {
+    font-size: 14px;
+    color: #666;
+}
+
+.footer .footer-links a {
+    color: #6f6f6f;
+    text-decoration: none;
+}
+
+.footer .footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer .footer-contact {
+    font-size: 14px;
+    color: #666;
+}
+
+.footer .footer-contact a {
+    color: #6f6f6f;
+    text-decoration: none;
+}
+
+.footer .footer-contact a:hover {
+    text-decoration: underline;
+}
+
+/* Ikon hijau */
+.icon-green {
+    color: #28a745;
+    /* Warna hijau */
+    margin-right: 8px;
+    /* Jarak ikon dengan teks */
+}
+
+/* Teks di footer */
+.footer h5 {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.footer p,
+.footer a {
+    font-size: 14px;
+    color: #333;
+}
+
+.footer a:hover {
+    color: #28a745;
+    /* Warna hijau saat hover */
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    background-color: #000;
+    color: #fff;
+    padding: 9px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Contact section - already provided */
+.contact-container {
+    margin-top: 40px;
+    padding: 40px 60px;
+    border-radius: 10px;
+    text-align: left;
+    background: linear-gradient(to right,
+            rgba(20, 114, 255, 1),
+            /* Biru di kiri */
+            rgba(255, 255, 255, 1)
+            /* Putih di kanan */
+        );
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-container h3 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.contact-container p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #f0f0f0;
+}
+
+.contact-container .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contact-container .btn-whatsapp {
+    background-color: #fff;
+    color: rgba(20, 114, 255, 1);
+    /* Biru untuk teks */
+    border: 2px solid rgba(20, 114, 255, 1);
+    /* Border biru */
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #007bff;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.contact-container .btn-whatsapp i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.contact-container .btn-whatsapp:hover {
+    background-color: rgba(20, 114, 255, 1);
+    /* Background biru */
+    color: white;
+    /* Ubah warna teks menjadi putih */
+    text-decoration: none;
+}
+
+/* New styles for the FAQ page */
+
+/* Hero Section */
+.hero-section {
+    background-color: #e6f3ff;
+    background-image: url('./assets/foto3.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0;
+    position: relative;
+}
+
+.hero-section:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(230, 243, 255, 0.8);
+    z-index: 0;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-section h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #1472ff;
+    margin-bottom: 15px;
+}
+
+.hero-section p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.search-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-input {
+    border-radius: 30px 0 0 30px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+}
+
+.search-button {
+    border-radius: 0 30px 30px 0;
+    padding: 12px 25px;
+    background-color: #1472ff;
+    border-color: #1472ff;
+    font-weight: 600;
+}
+
+.search-button:hover {
+    background-color: #0052cc;
+}
+
+/* FAQ Categories */
+.faq-categories {
+    padding: 50px 0;
+}
+
+.faq-categories h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.category-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid #e5e5e5;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-card:hover, 
+.category-card.active {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: #1472ff;
+}
+
+.category-card.active {
+    background-color: #f2f8ff;
+}
+
+.icon-container {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.category-icon {
+    width: 100%;
+    height: auto;
+    max-height: 60px;
+}
+
+.category-card p {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+}
+
+/* FAQ Sections */
+.faq-section {
+    padding: 50px 0 80px;
+    background-color: #f9f9f9;
+}
+
+.section-title {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.section-title h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1472ff;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.title-underline {
+    width: 80px;
+    height: 3px;
+    background-color: #1472ff;
+    margin: 0 auto;
+}
+
+.accordion-item {
+    margin-bottom: 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.accordion-button {
+    padding: 18px 25px;
+    font-weight: 600;
+    font-size: 17px;
+    color: #333;
+    background-color: #fff;
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #1472ff;
+    background-color: #f2f8ff;
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: #e5e5e5;
+}
+
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231472ff' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+}
+
+.accordion-body {
+    padding: 20px 25px;
+    background-color: #fafafa;
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .hero-section {
+        padding: 70px 0;
+    }
+    
+    .hero-section h1 {
+        font-size: 36px;
+    }
+    
+    .contact-container {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero-section h1 {
+        font-size: 32px;
+    }
+    
+    .search-container {
+        max-width: 100%;
+    }
+    
+    .contact-container {
+        text-align: center;
+    }
+    
+    .contact-container .row {
+        flex-direction: column;
+    }
+    
+    .contact-container .col-md-4 {
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    .accordion-button {
+        font-size: 16px;
+        padding: 15px 20px;
+    }
+}

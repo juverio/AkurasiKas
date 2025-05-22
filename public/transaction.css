@@ -1,0 +1,670 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f7fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .logo img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+}
+
+.sidebar nav {
+    margin-top: 20px;
+}
+
+.sidebar nav a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: #6b7280;
+    text-decoration: none;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.sidebar nav a.active {
+    background-color: #eff6ff;
+    color: #3b82f6;
+    border-left: 4px solid #3b82f6;
+}
+
+.sidebar nav a:hover {
+    background-color: #f3f4f6;
+}
+
+.sidebar nav a i {
+    margin-right: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+}
+
+.sidebar-footer a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: #6b7280;
+    text-decoration: none;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.sidebar-footer i {
+    padding-right: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.sidebar-footer a:hover {
+    background-color: #f3f4f6;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+header {
+    background-color: white;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.search {
+    position: relative;
+}
+
+.search input {
+    padding: 8px 12px 8px 30px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    width: 100%;
+    min-width: 150px;
+}
+
+.search i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-profile .username {
+    font-weight: bold;
+    margin: 0;
+}
+
+.user-profile .role {
+    font-size: 12px;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* User Profile Dropdown */
+.user-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.user-profile:hover {
+    background-color: #f3f4f6;
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-profile .username {
+    font-weight: bold;
+    margin: 0;
+    font-size: 14px;
+}
+
+.user-profile .role {
+    font-size: 12px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.dropdown-icon {
+    font-size: 12px;
+    color: #6b7280;
+    transition: transform 0.2s;
+    margin-left: 8px;
+}
+
+.user-profile.active .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.profile-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    z-index: 100;
+    display: none;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.user-profile.active .profile-dropdown-menu {
+    display: block;
+}
+
+.profile-dropdown-menu a {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    font-size: 14px;
+}
+
+.profile-dropdown-menu a:hover {
+    background-color: #f3f4f6;
+}
+
+.profile-dropdown-menu a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.profile-dropdown-menu a:last-child {
+    color: #dc3545;
+}
+
+/* Main Sections */
+main {
+    padding: 20px;
+    background-color: #f5f7fa;
+    flex: 1;
+}
+
+/* Transaction Controls */
+.transaction-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.transaction-type {
+    position: relative;
+}
+
+.btn-primary {
+    background-color: #f59e0b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    background-color: #d97706;
+}
+
+.dropdown-toggle i {
+    font-size: 12px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.dropdown-menu a {
+    color: #333;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f3f4f6;
+}
+
+.transaction-type:hover .dropdown-menu {
+    display: block;
+}
+
+.date-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-icon {
+    background-color: #f3f4f6;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-field {
+    position: relative;
+}
+
+.date-input {
+    padding: 8px 30px 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.date-field i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+}
+
+.date-separator {
+    font-weight: bold;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-secondary {
+    background-color: #f3f4f6;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-secondary:hover {
+    background-color: #e5e7eb;
+}
+
+/* Transaction Table */
+.transaction-table {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.transaction-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transaction-table th, 
+.transaction-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction-table th {
+    color: #6b7280;
+    font-weight: 500;
+    background-color: #f9fafb;
+}
+
+.transaction-table .checkbox-col {
+    width: 40px;
+}
+
+.transaction-table .action-col {
+    width: 50px;
+}
+
+.transaction-table input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.on-the-way {
+    background-color: #fff7e6;
+    color: #d97706;
+}
+
+.problem {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.delivered {
+    background-color: #ecfdf5;
+    color: #10b981;
+}
+
+.action-menu {
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.action-menu:hover {
+    color: #3b82f6;
+}
+
+.selected-row {
+    background-color: #f0f9ff;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.pagination-number,
+.pagination-arrow {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination-number.active {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.pagination-number:hover:not(.active),
+.pagination-arrow:hover {
+    background-color: #f3f4f6;
+}
+
+/* Footer */
+footer {
+    background-color: white;
+    text-align: left;
+    margin-top: auto;
+}
+
+.footer-text-title {
+    color: #3b82f6;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-logo {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.footer-text, .footer-contact {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #4b5563;
+}
+
+.footer-links a {
+    display: block;
+    color: #4b5563;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.footer-links a:hover {
+    color: #3b82f6;
+}
+
+.footer-bottom {
+    background-color: #111;
+    padding: 5px;
+    font-size: 14px;
+    color: white;
+    text-align: center;
+}
+
+/* Additional styles to make sure menu-toggle is visible */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .transaction-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .date-filter, .action-buttons {
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+    .action-buttons {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    
+    .main-content header {
+        padding-top: 60px; /* Add space for the menu button */
+    }
+    
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        height: 100%;
+        z-index: 999;
+        transition: left 0.3s ease;
+        overflow-y: auto;
+    }
+    
+    .sidebar.active {
+        left: 0;
+    }
+    
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 998;
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+    }
+    
+    .date-inputs {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .date-field {
+        width: 100%;
+    }
+    
+    .date-input {
+        width: 100%;
+    }
+    
+    .date-separator {
+        display: none;
+    }
+    
+    .transaction-table {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-secondary, .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+    }
+}

@@ -1,0 +1,239 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Footer styles - already provided */
+.footer {
+    padding: 40px 0;
+}
+
+.footer h5 {
+    color: #1472ff;
+    font-weight: 700;
+}
+
+.footer .footer-logo {
+    max-width: 150px;
+}
+
+.footer .footer-text {
+    font-size: 14px;
+    color: #666;
+}
+
+.footer .footer-links a {
+    color: #6f6f6f;
+    text-decoration: none;
+}
+
+.footer .footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer .footer-contact {
+    font-size: 14px;
+    color: #666;
+}
+
+.footer .footer-contact a {
+    color: #6f6f6f;
+    text-decoration: none;
+}
+
+.footer .footer-contact a:hover {
+    text-decoration: underline;
+}
+
+/* Teks di footer */
+.footer h5 {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.footer p,
+.footer a {
+    font-size: 14px;
+    color: #333;
+}
+
+.footer a:hover {
+    color: #28a745;
+    /* Warna hijau saat hover */
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    background-color: #000;
+    color: #fff;
+    padding: 9px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Contact section - already provided */
+.contact-container {
+    margin-top: 40px;
+    padding: 40px 60px;
+    border-radius: 10px;
+    text-align: left;
+    background: linear-gradient(to right,
+            rgba(20, 114, 255, 1),
+            /* Biru di kiri */
+            rgba(255, 255, 255, 1)
+            /* Putih di kanan */
+        );
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-container h3 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.contact-container p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #f0f0f0;
+}
+
+.contact-container .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contact-container .btn-whatsapp {
+    background-color: #fff;
+    color: rgba(20, 114, 255, 1);
+    /* Biru untuk teks */
+    border: 2px solid rgba(20, 114, 255, 1);
+    /* Border biru */
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #007bff;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.contact-container .btn-whatsapp i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.contact-container .btn-whatsapp:hover {
+    background-color: rgba(20, 114, 255, 1);
+    /* Background biru */
+    color: white;
+    /* Ubah warna teks menjadi putih */
+    text-decoration: none;
+}
+
+/* Blog Detail Styles */
+.blog-detail {
+    padding: 60px 0;
+}
+
+.blog-header {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.blog-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1472ff;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.blog-meta {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.blog-meta span {
+    margin-right: 1.5rem;
+}
+
+.blog-meta i {
+    margin-right: 0.5rem;
+}
+
+.featured-image {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.featured-image img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+}
+
+.article-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+.article-content p {
+    margin-bottom: 1.5rem;
+}
+
+.article-content h2 {
+    font-size: 1.8rem;
+    margin: 2.5rem 0 1.5rem;
+    color: #1472ff;
+    font-weight: 600;
+}
+
+.article-content h3 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1.2rem;
+    font-weight: 600;
+}
+
+.article-content ul, 
+.article-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.article-content li {
+    margin-bottom: 0.5rem;
+}
+
+.highlight-box {
+    border-left: 4px solid #1472ff;
+}
+
+.share-buttons .btn {
+    padding: 8px 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .blog-title {
+        font-size: 2rem;
+    }
+    
+    .article-content {
+        font-size: 1rem;
+    }
+    
+    .article-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .blog-meta span {
+        display: block;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+}
