@@ -25,16 +25,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">BERANDA</a>
+                        <a class="nav-link" href="/">BERANDA</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">KAMI</a>
+                        <a class="nav-link" href="/aboutus">KAMI</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">BLOG</a>
+                        <a class="nav-link" href="/blog">BLOG</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">FAQ</a>
+                        <a class="nav-link" href="/faq">FAQ</a>
                     </li>
                 </ul>
             </div>
@@ -57,126 +57,18 @@
     <!-- Blog Posts Section -->
     <section class="blog-posts">
         <div class="container">
-            <div class="row">
-                <!-- Blog Post 1 -->
-                <div class="col-md-4 mb-4">
-                    <a href="#" class="blog-card-link">
-                        <div class="blog-card">
-                            <div class="blog-image">
-                                <img src="./assets/blog1.jpg" alt="Blog Post 1" class="img-fluid">
-                            </div>
-                            <div class="blog-content">
-                                <h3 class="blog-title">Cara Mengelola Keuangan Bisnis Kecil dengan Efektif</h3>
-                                <div class="blog-meta">
-                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> 15 Juni 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Blog Post 2 -->
-                <div class="col-md-4 mb-4">
-                    <a href="#" class="blog-card-link">
-                        <div class="blog-card">
-                            <div class="blog-image">
-                                <img src="./assets/blog2.jpg" alt="Blog Post 2" class="img-fluid">
-                            </div>
-                            <div class="blog-content">
-                                <h3 class="blog-title">Peran Teknologi dalam Manajemen Keuangan Modern</h3>
-                                <div class="blog-meta">
-                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> 5 Juni 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Blog Post 3 -->
-                <div class="col-md-4 mb-4">
-                    <a href="#" class="blog-card-link">
-                        <div class="blog-card">
-                            <div class="blog-image">
-                                <img src="./assets/blog3.jpg" alt="Blog Post 3" class="img-fluid">
-                            </div>
-                            <div class="blog-content">
-                                <h3 class="blog-title">5 Kesalahan Manajemen Kas yang Harus Dihindari</h3>
-                                <div class="blog-meta">
-                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> 28 Mei 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Blog Post 4 -->
-                <div class="col-md-4 mb-4">
-                    <a href="#" class="blog-card-link">
-                        <div class="blog-card">
-                            <div class="blog-image">
-                                <img src="./assets/blog4.jpg" alt="Blog Post 4" class="img-fluid">
-                            </div>
-                            <div class="blog-content">
-                                <h3 class="blog-title">Memahami Laporan Keuangan untuk Pemula</h3>
-                                <div class="blog-meta">
-                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> 15 Mei 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Blog Post 5 -->
-                <div class="col-md-4 mb-4">
-                    <a href="#" class="blog-card-link">
-                        <div class="blog-card">
-                            <div class="blog-image">
-                                <img src="./assets/blog5.jpg" alt="Blog Post 5" class="img-fluid">
-                            </div>
-                            <div class="blog-content">
-                                <h3 class="blog-title">Cara Meningkatkan Arus Kas dalam Bisnis</h3>
-                                <div class="blog-meta">
-                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> 2 Mei 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Blog Post 6 -->
-                <div class="col-md-4 mb-4">
-                    <a href="#" class="blog-card-link">
-                        <div class="blog-card">
-                            <div class="blog-image">
-                                <img src="./assets/blog6.jpg" alt="Blog Post 6" class="img-fluid">
-                            </div>
-                            <div class="blog-content">
-                                <h3 class="blog-title">Fitur Terbaru AkurasiKas untuk Manajemen Stok</h3>
-                                <div class="blog-meta">
-                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> 20 April 2024</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+            <div class="row" id="blog-container">
+                <div class="text-center w-100" id="loading-message">
+                    <p>Memuat Berita...</p>
                 </div>
             </div>
 
-            <!-- Pagination -->
-            <nav aria-label="Blog pagination">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Sebelumnya</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Selanjutnya</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="d-flex justify-content-center mt-4">
+                <ul class="pagination" id="pagination"></ul>
+            </div>
         </div>
     </section>
+
     <!-- Contact Section -->
     <section class="contact-section">
         <div class="container contact-container">
@@ -232,11 +124,12 @@
         </div>
     </footer>
     <div class="footer-bottom">
-        <p>© 2024 AkurasiKas | Semua Hak Dilindungi</p>
+        <p>© <%= new Date().getFullYear() %> AkurasiKas | Semua Hak Dilindungi</p>
     </div>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="./blog.js"></script> <!-- Pindahkan ke sini -->
 </body>
 
 </html>

@@ -25,16 +25,16 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">BERANDA</a>
+            <a class="nav-link" href="/">BERANDA</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">KAMI</a>
+            <a class="nav-link" href="/aboutus">KAMI</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">BLOG</a>
+            <a class="nav-link" href="/blog">BLOG</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">FAQ</a>
+            <a class="nav-link" href="/faq">FAQ</a>
           </li>
         </ul>
       </div>
@@ -110,7 +110,7 @@
       <h2>Mulai kelola pembukuan anda dengan mudah</h2>
       <img src="./assets/logo4.jpg" alt="Logo" class="cta-image" />
       <div class="cta-button">
-        <a class="btn btn-primary" href="/login">Mulai Sekarang!</a>
+        <a class="btn btn-primary" href="/auth/login">Mulai Sekarang!</a>
       </div>
     </div>
   </section>
@@ -178,7 +178,7 @@
     </div>
   </footer>
   <div class="footer-bottom">
-    <p>© 2024 AkurasiKas | Semua Hak Dilindungi</p>
+    <p>© <%= new Date().getFullYear() %> AkurasiKas | Semua Hak Dilindungi</p>
   </div>
 
 </html>

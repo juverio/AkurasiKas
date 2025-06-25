@@ -1,254 +1,335 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+document.addEventListener('DOMContentLoaded', () => {
+    const addItemBtn = document.querySelector('.add-item-btn');
+    const inventoryTable = document.querySelector('.inventory-table tbody');
+    const modal = createModal();
+    let isEditMode = false; // 🔁 Global flag
     const selectAllCheckbox = document.getElementById('select-all');
-    const rowCheckboxes = document.querySelectorAll('.row-checkbox');
     const bulkDeleteBtn = document.getElementById('bulk-delete');
+    const exportBtn = document.getElementById('export-btn');
     const selectedCount = document.getElementById('selected-count');
-    const selectedSummary = document.getElementById('selected-summary');
-    const confirmModal = document.getElementById('confirm-modal');
-    const modalClose = document.querySelector('.modal-close');
-    const btnCancel = document.querySelector('.btn-cancel');
-    const btnConfirm = document.querySelector('.btn-confirm');
-    const confirmMessage = document.getElementById('confirm-message');
-    
-    // Current page state
-    let currentPage = 1;
-    let selectedItems = [];
-    
-    // Initialize date pickers
-    function initDatePickers() {
-        const today = new Date();
-        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-        const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-        
-        document.getElementById('start-date').valueAsDate = firstDay;
-        document.getElementById('end-date').valueAsDate = lastDay;
+    let selectedItems = new Set();
+
+    selectAllCheckbox.addEventListener('change', (e) => {
+        const checkboxes = document.querySelectorAll('.row-checkbox');
+        selectedItems.clear();
+
+        checkboxes.forEach(cb => {
+            cb.checked = e.target.checked;
+            if (e.target.checked) selectedItems.add(cb.dataset.id);
+        });
+
+        updateSelectedCount();
+    });
+
+    // ✅ Checkbox per baris
+    document.querySelectorAll('.row-checkbox').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+            const id = cb.dataset.id;
+            if (cb.checked) selectedItems.add(id);
+            else selectedItems.delete(id);
+
+            // Sync header checkbox
+            const all = document.querySelectorAll('.row-checkbox');
+            const checked = document.querySelectorAll('.row-checkbox:checked');
+            selectAllCheckbox.checked = all.length === checked.length;
+
+            updateSelectedCount();
+        });
+    });
+
+    function updateSelectedCount() {
+        selectedCount.textContent = selectedItems.size;
+        document.getElementById('selected-summary').textContent = selectedItems.size;
+        bulkDeleteBtn.disabled = selectedItems.size === 0;
+        exportBtn.disabled = selectedItems.size === 0;
     }
-    
-    // Filter button click handler
-    document.querySelector('.filter-btn').addEventListener('click', function() {
+
+    // ✅ Hapus Massal
+    bulkDeleteBtn.addEventListener('click', async () => {
+        if (selectedItems.size === 0) return alert('Tidak ada data dipilih.');
+
+        const konfirmasi = await showConfirmDialog(`Yakin ingin menghapus ${selectedItems.size} data?`);
+        if (!konfirmasi) return;
+
+        try {
+            const res = await fetch('/inventori/delete-multiple', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ kodeList: Array.from(selectedItems) })
+            });
+
+            const result = await res.json();
+            showToast(result.message || 'Berhasil dihapus!', 'success');
+            location.reload();
+        } catch (err) {
+            showToast(result.message || 'Berhasil dihapus!', 'success');
+        }
+    });
+
+    // ✅ Ekspor Sesuai Filter
+    exportBtn.addEventListener('click', async () => {
+        if (selectedItems.size === 0) return showToast('Pilih data terlebih dahulu', 'warning');
+
+        try {
+            const response = await fetch('/inventori/export', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ kodeList: Array.from(selectedItems) })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                showToast(err.error || 'Gagal ekspor', 'error');
+                return;
+            }
+
+            // Download blob Excel
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Inventori.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            showToast('Berhasil mengekspor file Excel!', 'success');
+
+        } catch (err) {
+            console.error(err);
+            showToast('Berhasil mengekspor file Excel!', 'success');
+        }
+    });
+
+
+    document.querySelector('.filter-btn').addEventListener('click', () => {
         const startDate = document.getElementById('start-date').value;
         const endDate = document.getElementById('end-date').value;
-        
-        // Here you would typically make an AJAX request to filter the data
-        console.log('Filtering from', startDate, 'to', endDate);
-        // For demo, we'll just reload the table
-        loadTableData();
+        let url = `/inventori/inventory?`;
+
+        if (startDate) url += `startDate=${startDate}&`;
+        if (endDate) url += `endDate=${endDate}&`;
+
+        window.location.href = url;
     });
-    
-    // Download button click handler
-    document.querySelector('.download-btn').addEventListener('click', function() {
-        const startDate = document.getElementById('start-date').value;
-        const endDate = document.getElementById('end-date').value;
-        
-        console.log('Exporting data from', startDate, 'to', endDate);
-        // In a real app, this would trigger a download
-        alert('Ekspor data akan dimulai...');
+
+    document.getElementById('search-input').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            const keyword = e.target.value.trim();
+            const params = new URLSearchParams(window.location.search);
+            if (keyword) params.set('search', keyword);
+            else params.delete('search');
+            window.location.href = '/inventori/inventory?' + params.toString();
+        }
     });
-    
-    // Select all checkbox
-    selectAllCheckbox.addEventListener('change', function() {
-        const isChecked = this.checked;
-        rowCheckboxes.forEach(checkbox => {
-            checkbox.checked = isChecked;
-            updateRowSelection(checkbox);
-        });
-        updateSelectionSummary();
-    });
-    
-    // Individual row checkbox
-    rowCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            updateRowSelection(this);
-            updateSelectionSummary();
+
+    // Tombol Tambah Barang
+    addItemBtn.addEventListener('click', () => {
+        openModal({
+            title: 'Tambah Barang',
+            fields: {
+                kode_barang: '',
+                nama_barang: '',
+                bagian: '',
+                tanggal_pembelian: '',
+                jumlah_stok: ''
+            },
+            isEdit: false
         });
     });
-    
-    // Row click handler
-    document.querySelectorAll('.inventory-table tbody tr').forEach(row => {
-        row.addEventListener('click', function(e) {
-            if (!e.target.matches('input[type="checkbox"], button, a, i')) {
-                const checkbox = this.querySelector('.row-checkbox');
-                checkbox.checked = !checkbox.checked;
-                checkbox.dispatchEvent(new Event('change'));
+
+    // Event untuk tombol Edit & Hapus
+    inventoryTable.addEventListener('click', async (e) => {
+        const row = e.target.closest('tr');
+        if (!row) return;
+
+        const kode = row?.children[1]?.textContent?.trim();
+        const nama = row?.children[2]?.textContent?.trim();
+
+        if (e.target.closest('.edit-btn')) {
+            try {
+                const response = await fetch(`/inventori/${kode}`);
+                const data = await response.json();
+
+                openModal({
+                    title: 'Edit Barang',
+                    fields: data,
+                    isEdit: true
+                });
+            } catch (err) {
+                showToast("Gagal memuat detail barang", "error");
+            }
+        }
+
+        if (e.target.closest('.delete-btn')) {
+            const yakin = await showConfirmDialog(`Yakin ingin menghapus barang ${nama}?`);
+            if (!yakin) return;
+            try {
+                await fetch(`/inventori/delete/${kode}`, { method: 'DELETE' });
+                row.remove();
+                showToast(`Barang '${nama}' berhasil dihapus!`, "success");
+                setTimeout(() => location.reload(), 1000);
+            } catch (err) {
+                showToast("Gagal menghapus barang", "error");
+            }
+        }
+    });
+
+    // Membuat Modal
+    function createModal() {
+        const modal = document.createElement('div');
+        modal.className = 'popup-modal';
+        modal.innerHTML = `
+            <div class="popup-content">
+                <div class="popup-header">
+                    <h2 class="popup-title"></h2>
+                    <button class="popup-close">&times;</button>
+                </div>
+                <div class="popup-body">
+                    <form class="popup-form">
+                        <label>Kode Barang</label>
+                        <input type="text" name="kode_barang" required>
+                        <label>Nama Barang</label>
+                        <input type="text" name="nama_barang" required>
+                        <label>Bagian</label>
+                        <input type="text" name="bagian" required>
+                        <label>Tanggal Pembelian</label>
+                        <input type="date" name="tanggal_pembelian" required>
+                        <label>Jumlah Stok</label>
+                        <input type="number" name="jumlah_stok" required>
+                        <div class="popup-buttons">
+                            <button type="submit" class="popup-submit">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.querySelector('.popup-close').addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // Event Simpan Data
+        modal.querySelector('.popup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const item = Object.fromEntries(formData.entries());
+
+            item.jumlah_stok = parseInt(item.jumlah_stok, 10) || 0;
+
+            try {
+                const url = isEditMode
+                    ? `/inventori/update/${item.kode_barang}`
+                    : `/inventori/create`;
+                const method = isEditMode ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(item),
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    showToast(isEditMode ? "Barang berhasil diperbarui!" : "Barang berhasil ditambahkan!", "success");
+                    modal.classList.remove('active');
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    const errorText = await response.text();
+                    console.error("RESPON GAGAL:", errorText);
+                    showToast("Gagal menyimpan data", "error");
+                }
+            } catch (err) {
+                showToast("Terjadi kesalahan saat menyimpan: " + err.message, "error");
             }
         });
-    });
-    
-    // Update row selection style
-    function updateRowSelection(checkbox) {
-        const row = checkbox.closest('tr');
-        if (checkbox.checked) {
-            row.classList.add('selected');
+
+        return modal;
+    }
+
+    // Buka Modal
+    function openModal({ title, fields, isEdit }) {
+        isEditMode = isEdit;
+
+        modal.querySelector('.popup-title').textContent = title;
+
+        const form = modal.querySelector('.popup-form');
+        const kodeInput = form.querySelector('[name="kode_barang"]');
+        const namaInput = form.querySelector('[name="nama_barang"]');
+        const bagianInput = form.querySelector('[name="bagian"]');
+        const tanggalInput = form.querySelector('[name="tanggal_pembelian"]');
+        const stokInput = form.querySelector('[name="jumlah_stok"]');
+
+        kodeInput.value = fields.kode_barang || '';
+        namaInput.value = fields.nama_barang || '';
+        bagianInput.value = fields.bagian || '';
+        tanggalInput.value = fields.tanggal_pembelian?.slice(0, 10) || '';
+        stokInput.value = fields.jumlah_stok || '';
+
+        if (isEdit) {
+            kodeInput.setAttribute('readonly', true);
         } else {
-            row.classList.remove('selected');
-            selectAllCheckbox.checked = false;
+            kodeInput.removeAttribute('readonly');
         }
-    }
-    
-    // Update selection summary
-    function updateSelectionSummary() {
-        selectedItems = Array.from(document.querySelectorAll('.row-checkbox:checked'))
-            .map(checkbox => checkbox.dataset.id);
-        
-        const count = selectedItems.length;
-        selectedCount.textContent = count;
-        selectedSummary.textContent = count;
-        
-        bulkDeleteBtn.disabled = count === 0;
-    }
-    
-    // Bulk delete action
-    bulkDeleteBtn.addEventListener('click', function() {
-        if (selectedItems.length > 0) {
-            showConfirmModal(
-                `Apakah Anda yakin ingin menghapus ${selectedItems.length} item terpilih?`,
-                function() {
-                    console.log('Deleting items:', selectedItems);
-                    // In a real app, this would be an AJAX call
-                    alert(`${selectedItems.length} item berhasil dihapus`);
-                    // Then reload the data
-                    loadTableData();
-                }
-            );
-        }
-    });
-    
-    // Individual delete buttons
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const row = this.closest('tr');
-            const itemId = row.querySelector('.row-checkbox').dataset.id;
-            const itemName = row.cells[2].textContent;
-            
-            showConfirmModal(
-                `Apakah Anda yakin ingin menghapus item "${itemName}"?`,
-                function() {
-                    console.log('Deleting item:', itemId);
-                    // In a real app, this would be an AJAX call
-                    alert(`Item "${itemName}" berhasil dihapus`);
-                    // Then reload the data
-                    loadTableData();
-                }
-            );
-        });
-    });
-    
-    // Edit buttons
-    document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const row = this.closest('tr');
-            const itemId = row.querySelector('.row-checkbox').dataset.id;
-            console.log('Editing item:', itemId);
-            // In a real app, this would open an edit form/modal
-            alert(`Membuka form edit untuk item ${itemId}`);
-        });
-    });
-    
-    // Pagination controls
-    document.querySelectorAll('.pagination-btn:not(#prev-page):not(#next-page)').forEach(btn => {
-        btn.addEventListener('click', function() {
-            if (!this.classList.contains('active')) {
-                document.querySelector('.pagination-btn.active').classList.remove('active');
-                this.classList.add('active');
-                currentPage = parseInt(this.textContent);
-                loadTableData();
-            }
-        });
-    });
-    
-    document.getElementById('next-page').addEventListener('click', function() {
-        if (!this.disabled) {
-            currentPage++;
-            updatePagination();
-            loadTableData();
-        }
-    });
-    
-    document.getElementById('prev-page').addEventListener('click', function() {
-        if (!this.disabled) {
-            currentPage--;
-            updatePagination();
-            loadTableData();
-        }
-    });
-    
-    function updatePagination() {
-        const totalPages = 2; // In a real app, this would come from the server
-        const pageButtons = document.querySelectorAll('.pagination-btn:not(#prev-page):not(#next-page)');
-        
-        // Update active state
-        pageButtons.forEach(btn => {
-            btn.classList.remove('active');
-            if (parseInt(btn.textContent) === currentPage) {
-                btn.classList.add('active');
-            }
-        });
-        
-        // Update button states
-        document.getElementById('prev-page').disabled = currentPage === 1;
-        document.getElementById('next-page').disabled = currentPage === totalPages;
-    }
-    
-    // Modal functions
-    function showConfirmModal(message, confirmCallback) {
-        confirmMessage.textContent = message;
-        confirmModal.style.display = 'flex';
-        
-        // Store the callback
-        btnConfirm.onclick = function() {
-            confirmCallback();
-            confirmModal.style.display = 'none';
-        };
-    }
-    
-    modalClose.addEventListener('click', function() {
-        confirmModal.style.display = 'none';
-    });
-    
-    btnCancel.addEventListener('click', function() {
-        confirmModal.style.display = 'none';
-    });
-    
-    window.addEventListener('click', function(event) {
-        if (event.target === confirmModal) {
-            confirmModal.style.display = 'none';
-        }
-    });
-    
-    // Load table data (simulated)
-    function loadTableData() {
-        console.log('Loading data for page', currentPage);
-        // In a real app, this would be an AJAX call to get paginated data
-        // For demo, we'll just reset selections
-        selectAllCheckbox.checked = false;
-        rowCheckboxes.forEach(checkbox => {
-            checkbox.checked = false;
-            updateRowSelection(checkbox);
-        });
-        updateSelectionSummary();
-    }
-    
-    // Initialize
-    initDatePickers();
-    loadTableData();
 
-    // Sidebar toggle
-    const menuToggle = document.getElementById('menu-toggle');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
+        modal.classList.add('active');
+    }
 
-    if (menuToggle && sidebar && overlay) {
-        menuToggle.addEventListener('click', function () {
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        });
+    // Notifikasi Toast
+    function showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toast-container') || createToastContainer();
+        const toast = document.createElement('div');
+        toast.className = 'toast';
 
-        overlay.addEventListener('click', function () {
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
+        let iconClass = 'bx bx-error-circle';
+        if (type === 'success') iconClass = 'bx bx-check-circle';
+        if (type === 'warning') iconClass = 'bx bx-error';
+        if (type === 'info') iconClass = 'bx bx-info-circle';
+
+        toast.innerHTML = `<i class='${iconClass}'></i><span>${message}</span>`;
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+
+    function createToastContainer() {
+        const container = document.createElement('div');
+        container.id = 'toast-container';
+        container.style.position = 'fixed';
+        container.style.bottom = '20px';
+        container.style.right = '20px';
+        container.style.zIndex = '9999';
+        document.body.appendChild(container);
+        return container;
+    }
+
+    function showConfirmDialog(message) {
+        return new Promise((resolve) => {
+            const dialog = document.createElement('div');
+            dialog.className = 'confirm-dialog';
+            dialog.innerHTML = `
+            <div class="confirm-box">
+                <p>${message}</p>
+                <div class="confirm-actions">
+                    <button id="confirm-yes">Ya</button>
+                    <button id="confirm-no">Tidak</button>
+                </div>
+            </div>
+        `;
+            document.body.appendChild(dialog);
+
+            dialog.querySelector('#confirm-yes').addEventListener('click', () => {
+                resolve(true);
+                dialog.remove();
+            });
+
+            dialog.querySelector('#confirm-no').addEventListener('click', () => {
+                resolve(false);
+                dialog.remove();
+            });
         });
     }
 
@@ -267,6 +348,23 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!userProfile.contains(e.target)) {
                 userProfile.classList.remove('active');
             }
+        });
+    }
+
+    // Sidebar Overlay
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    if (menuToggle && sidebar && sidebarOverlay) {
+        menuToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', function () {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
         });
     }
 });

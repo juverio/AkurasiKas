@@ -19,70 +19,87 @@
         <div class="form login">
             <div class="form-content">
                 <header>Masuk</header>
-                <form id="loginForm" action="/login" method="POST">
+
+                <div id="error-message" class="error-message" style="color:red;"></div>
+
+                <form id="loginForm">
                     <div class="field input-field">
                         <input type="email" name="email" placeholder="Email" class="input" required>
                     </div>
                     <div class="field input-field">
                         <input type="password" name="password" placeholder="Password" class="input password" required>
                         <i class='bx bx-hide eye-icon'></i>
-                    </div>                    
+                    </div>
                     <div class="form-link">
-                        <a href="/forgot-password" class="forgot-pass">Lupa Kata Sandi?</a>
+                        <a href="/auth/forgot-password" class="forgot-pass">Lupa Kata Sandi?</a>
                     </div>
                     <div class="field button-field">
                         <button type="submit">Masuk</button>
                     </div>
                 </form>
+
                 <div class="form-link">
-                    <span>Tidak memiliki akun? <a href="/register" class="link">Daftar</a></span>
+                    <span>Tidak memiliki akun? <a href="/auth/register" class="link">Daftar</a></span>
                 </div>
             </div>
         </div>
     </section>
+    <!-- Toast container -->
+    <div id="toast-container"></div>
 
-    <!-- JavaScript -->
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const pwShowHide = document.querySelectorAll(".eye-icon"),
-                loginForm = document.getElementById('loginForm');
+            const loginForm = document.getElementById('loginForm');
+            const errorMsg = document.getElementById('error-message');
 
-            // Toggle password visibility
-            pwShowHide.forEach(eyeIcon => {
+            // Password show/hide toggle
+            document.querySelectorAll(".eye-icon").forEach(eyeIcon => {
                 eyeIcon.addEventListener("click", () => {
                     const passwordField = eyeIcon.parentElement.querySelector(".password");
                     if (passwordField.type === "password") {
-                        passwordField.type = "text"; // Show password
+                        passwordField.type = "text";
                         eyeIcon.classList.replace("bx-hide", "bx-show");
                     } else {
-                        passwordField.type = "password"; // Hide password
+                        passwordField.type = "password";
                         eyeIcon.classList.replace("bx-show", "bx-hide");
                     }
                 });
             });
 
-            // Handle form submission for login
+            // Handle login with Axios
             loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault(); // Mencegah pengiriman form default
+                e.preventDefault();
                 const formData = new FormData(loginForm);
+                const email = formData.get('email');
+                const password = formData.get('password');
 
                 try {
-                    const response = await fetch(loginForm.action, {
-                        method: 'POST',
-                        body: formData
-                    });
+                    const response = await axios.post('/auth/login', { email, password });
 
-                    const result = await response.json();
-                    if (result.success) {
-                        // Redirect or show success message
-                        window.location.href = '/dashboard'; // Ubah sesuai kebutuhan
+                    if (response.data.success) {
+                        window.location.href = '/home/dashboard';
                     } else {
-                        alert(result.message); // Tampilkan pesan kesalahan
+                        showToast(response.data.message);
                     }
                 } catch (error) {
-                    console.error('Error:', error);
+                    showToast(error.response?.data?.message || 'Terjadi kesalahan saat login.');
+
                 }
             });
+            // Fungsi untuk menampilkan error toast
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast-message';
+                toast.innerHTML = `<i class='bx bx-error-circle'></i> ${message}`;
+                document.getElementById('toast-container').appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 5000);
+            }
         });
     </script>
 </body>

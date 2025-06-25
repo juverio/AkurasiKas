@@ -9,6 +9,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./faq.css" />
+    <script defer src="/faq.js"></script>
 </head>
 
 <body>
@@ -25,23 +26,23 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">BERANDA</a>
+                        <a class="nav-link" href="/">BERANDA</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">KAMI</a>
+                        <a class="nav-link" href="/aboutus">KAMI</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">BLOG</a>
+                        <a class="nav-link" href="/blog">BLOG</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">FAQ</a>
+                        <a class="nav-link" href="/faq">FAQ</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Bagian Judul & Pencarian -->
     <section class="hero-section">
         <div class="container text-center">
             <h1>Pusat Bantuan</h1>
@@ -55,7 +56,7 @@
         </div>
     </section>
 
-    <!-- FAQ Categories -->
+    <!-- Kategori -->
     <section class="faq-categories">
         <div class="container text-center">
             <h2>Atau pilih kategori di bawah ini</h2>
@@ -63,7 +64,7 @@
                 <div class="col-md-3 col-sm-6 mb-4">
                     <div class="category-card active">
                         <div class="icon-container">
-                            <img src="./assets/logo8.jpg" alt="Umum" class="category-icon">
+                            <img src="/assets/logo8.jpg" alt="Umum" class="category-icon">
                         </div>
                         <p>Umum</p>
                     </div>
@@ -71,7 +72,7 @@
                 <div class="col-md-3 col-sm-6 mb-4">
                     <div class="category-card">
                         <div class="icon-container">
-                            <img src="./assets/logo9.jpg" alt="Pembayaran" class="category-icon">
+                            <img src="/assets/logo9.jpg" alt="Pembayaran" class="category-icon">
                         </div>
                         <p>Pembayaran</p>
                     </div>
@@ -79,7 +80,7 @@
                 <div class="col-md-3 col-sm-6 mb-4">
                     <div class="category-card">
                         <div class="icon-container">
-                            <img src="./assets/logo10.jpg" alt="Layanan" class="category-icon">
+                            <img src="/assets/logo10.jpg" alt="Layanan" class="category-icon">
                         </div>
                         <p>Layanan</p>
                     </div>
@@ -91,151 +92,13 @@
     <!-- FAQ Accordion -->
     <section class="faq-section">
         <div class="container">
-            <div class="section-title">
-                <h2>Umum</h2>
+            <div class="section-title text-center">
+                <h2 id="faq-category-title">Umum</h2>
                 <div class="title-underline"></div>
             </div>
-            
+
             <div class="accordion" id="faqAccordion">
-                <!-- FAQ Item 1 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading1">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
-                            Apa itu AkurasiKas?
-                        </button>
-                    </h2>
-                    <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1"
-                        data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            AkurasiKas adalah solusi terintegrasi untuk memantau pendapatan, pengeluaran, dan stok barang
-                            secara real-time. Kami membantu bisnis dalam manajemen keuangan yang lebih baik dengan data
-                            akurat, tanpa kerumitan.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 2 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading2">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                            Apa manfaat menggunakan AkurasiKas?
-                        </button>
-                    </h2>
-                    <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2"
-                        data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Manfaat menggunakan AkurasiKas antara lain monitoring keuangan real-time, laporan keuangan otomatis, 
-                            integrasi dengan sistem stok barang, kemudahan akses dari mana saja, dan keamanan data yang terjamin.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 3 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading3">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                            Bagaimana cara memulai menggunakan aplikasi AkurasiKas?
-                        </button>
-                    </h2>
-                    <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3"
-                        data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Untuk memulai menggunakan AkurasiKas, Anda cukup mendaftar akun di website kami, melakukan verifikasi, 
-                            memilih paket berlangganan yang sesuai, dan mulai setup profil bisnis Anda. Tim support kami juga 
-                            akan membantu Anda selama proses onboarding.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 4 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading4">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                            Apakah AkurasiKas menyediakan dukungan teknis?
-                        </button>
-                    </h2>
-                    <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4"
-                        data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Ya, AkurasiKas menyediakan dukungan teknis melalui berbagai saluran seperti WhatsApp, email, dan 
-                            telepon. Tim dukungan kami siap membantu dari hari Senin sampai Jumat, pukul 08.00-17.00 WIB.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 5 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading5">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
-                            Apakah data saya aman dengan AkurasiKas?
-                        </button>
-                    </h2>
-                    <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5"
-                        data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Keamanan data adalah prioritas utama kami. AkurasiKas menggunakan enkripsi tingkat tinggi, 
-                            backup data reguler, dan sistem keamanan berlapis untuk memastikan data bisnis Anda aman dan terlindungi.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 6 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading6">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
-                            Bagaimana sistem lisensi AkurasiKas bekerja?
-                        </button>
-                    </h2>
-                    <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6"
-                        data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            AkurasiKas menawarkan beberapa jenis lisensi berdasarkan kebutuhan bisnis Anda, mulai dari paket Basic 
-                            hingga Enterprise. Setiap lisensi memberikan akses ke fitur yang berbeda dan jumlah pengguna 
-                            yang dapat mengakses sistem.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 7 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading7">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
-                            Apakah AkurasiKas bisa diakses melalui perangkat mobile?
-                        </button>
-                    </h2>
-                    <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="heading7"
-                        data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Ya, AkurasiKas dapat diakses melalui aplikasi mobile yang tersedia di Google Play Store dan Apple App Store. 
-                            Aplikasi mobile kami memungkinkan Anda memantau bisnis kapan saja dan di mana saja.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 8 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading8">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
-                            Bisakah AkurasiKas terintegrasi dengan aplikasi lain?
-                        </button>
-                    </h2>
-                    <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="heading8"
-                        data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            AkurasiKas mendukung integrasi dengan berbagai aplikasi bisnis populer seperti platform e-commerce, 
-                            aplikasi POS, dan software akuntansi. Kami juga menyediakan API untuk integrasi yang lebih kustom 
-                            sesuai kebutuhan bisnis Anda.
-                        </div>
-                    </div>
-                </div>
+                <!-- Data pertanyaan akan diisi oleh JavaScript -->
             </div>
         </div>
     </section>
@@ -296,7 +159,7 @@
         </div>
     </footer>
     <div class="footer-bottom">
-        <p>© 2024 AkurasiKas | Semua Hak Dilindungi</p>
+        <p>© <%= new Date().getFullYear() %> AkurasiKas | Semua Hak Dilindungi</p>
     </div>
 
     <!-- Scripts -->

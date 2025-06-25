@@ -668,3 +668,231 @@ footer {
         flex-wrap: wrap;
     }
 }
+
+/* =============== OVERLAY =============== */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* =============== POPUP FORM =============== */
+.popup-form {
+    background: #fff;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 700px;
+    max-height: calc(100vh - 60px); /* ✅ agar tidak terlalu tinggi */
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    position: absolute;
+    animation: fadeIn 0.3s ease;
+}
+
+/* =============== HEADER & CLOSE BUTTON =============== */
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.popup-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.popup-header .close-popup {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* =============== FORM FIELD =============== */
+.popup-form .form-group {
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-form .form-group label {
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.popup-form input[type="text"],
+.popup-form input[type="date"],
+.popup-form input[type="number"],
+.popup-form select {
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* =============== TABEL BARANG =============== */
+.barang-section {
+    margin-top: 20px;
+}
+
+.barang-section .btn-tambah-barang {
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    font-size: 13px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.barang-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.barang-table th,
+.barang-table td {
+    border: 1px solid #ddd;
+    padding: 6px 8px;
+    text-align: center;
+}
+
+.barang-table th {
+    background-color: #f2f2f2;
+}
+
+/* =============== TOTAL & ACTION BUTTONS =============== */
+.form-total {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.btn-submit {
+    background: #28a745;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+/* ========================== */
+/* RESPONSIF MOBILE          */
+/* ========================== */
+@media screen and (max-width: 768px) {
+    .popup-form {
+        padding: 20px;
+    }
+
+    .barang-section table,
+    .barang-section thead,
+    .barang-section tbody,
+    .barang-section th,
+    .barang-section td,
+    .barang-section tr {
+        display: block;
+        width: 100%;
+    }
+
+    .barang-section tr {
+        margin-bottom: 15px;
+    }
+
+    .barang-section td {
+        text-align: left;
+        padding: 10px;
+        border: none;
+        position: relative;
+    }
+
+    .barang-section td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff4d4f;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+}
+
+.edit-barang, .hapus-barang {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 4px 6px;
+  margin: 0 2px;
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+
+.edit-barang i {
+  color: #4CAF50; /* Hijau untuk edit */
+}
+
+.hapus-barang i {
+  color: #f44336; /* Merah untuk hapus */
+}
+
+.edit-barang:hover i,
+.hapus-barang:hover i {
+  transform: scale(1.2);
+  opacity: 0.8;
+}
+
+.btn-action {
+  display: flex;
+  gap: 8px; /* jarak antar tombol */
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-action button {
+  background-color: #f3f4f6;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 16px;
+}
+
+.btn-action .btn-detail i { color: #3b82f6; }   /* biru */
+.btn-action .btn-edit i { color: #f59e0b; }     /* kuning */
+.btn-action .btn-status i { color: #10b981; }   /* hijau */
+.btn-action .btn-delete i { color: #ef4444; }   /* merah */

@@ -7,6 +7,7 @@
     <title>Inventori</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/inventori.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script defer src="/inventori.js"></script>
 </head>
 
@@ -20,18 +21,18 @@
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="logo">
-                <img src="./assets/logo1.jpg" alt="Akurasikas Logo">
+                <img src="../assets/logo1.jpg" alt="Akurasikas Logo">
             </div>
             <nav>
                 <a href="/dashboard">
                     <i class="fas fa-home"></i>
                     Dashboard
                 </a>
-                <a href="/transaction">
+                <a href="/type/transaction">
                     <i class="fas fa-exchange-alt"></i>
                     Transaksi
                 </a>
-                <a href="/inventori" class="active">
+                <a href="/inventori/inventory" class="active">
                     <i class="fas fa-box"></i>
                     Inventori
                 </a>
@@ -63,19 +64,23 @@
                 <div class="header-right">
                     <div class="search">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Cari Sesuatu">
+                        <input type="text" id="search-input" placeholder="Cari Nama atau Kode Barang" value="<%= search || '' %>">
                     </div>
                     <i class="fas fa-bell"></i>
                     <div class="user-profile" id="user-profile">
                         <img src="/assets/profile-user.png" alt="User Avatar">
                         <div>
-                            <p class="username">Vinte</p>
-                            <p class="role">Akunting</p>
+                            <p class="username">
+                                <%= user.name %>
+                            </p>
+                            <p class="role">
+                                <%= user.role %>
+                            </p>
                         </div>
-                        
+
                         <!-- Dropdown Menu -->
                         <div class="dropdown-menu">
-                            <a href="/profile"><i class="fas fa-user"></i> Profil</a>
+                            <a href="/user/profile"><i class="fas fa-user"></i> Profil</a>
                             <a href="/"><i class="fas fa-sign-out-alt"></i> Keluar</a>
                         </div>
                     </div>
@@ -86,15 +91,22 @@
                 <div class="inventory-controls">
                     <div class="date-filter">
                         <label for="start-date">Dari:</label>
-                        <input type="date" id="start-date" value="2024-10-01">
+                        <input type="date" id="start-date" name="startDate" value="<%= startDate || '' %>">
                         <label for="end-date">Sampai:</label>
-                        <input type="date" id="end-date" value="2024-10-31">
+                        <input type="date" id="end-date" name="endDate" value="<%= endDate || '' %>">
                         <button class="filter-btn">
                             <i class="fas fa-filter"></i> Filter
                         </button>
                     </div>
                     <div class="table-actions">
-                        <button class="download-btn">
+                        <!-- Add this new button -->
+                        <button class="add-item-btn">
+                            <i class="fas fa-plus"></i> Tambah Barang
+                        </button>
+                        <!-- Existing buttons... -->
+                    </div>
+                    <div class="table-actions">
+                        <button class="download-btn" id="export-btn">
                             <i class="fas fa-file-export"></i> Ekspor
                         </button>
                         <button class="bulk-action-btn" id="bulk-delete" disabled>
@@ -107,11 +119,15 @@
                 <div class="inventory-summary">
                     <div class="summary-card new-stock">
                         <h3>Total Stok Baru</h3>
-                        <p>1,340</p>
+                        <p>
+                            <%= totalBaru %>
+                        </p>
                     </div>
                     <div class="summary-card old-stock">
                         <h3>Total Stok Lama</h3>
-                        <p>200</p>
+                        <p>
+                            <%= totalLama %>
+                        </p>
                     </div>
                     <div class="summary-card selected-items">
                         <h3>Item Terpilih</h3>
@@ -124,178 +140,67 @@
                     <table class="inventory-table">
                         <thead>
                             <tr>
-                                <th width="40px">
-                                    <input type="checkbox" id="select-all" aria-label="Pilih semua">
-                                </th>
+                                <th><input type="checkbox" id="select-all"></th>
                                 <th>Kode</th>
                                 <th>Nama Barang</th>
                                 <th>Bagian</th>
                                 <th>Tanggal Pembelian</th>
-                                <th>Status Stok</th>
+                                <th>Jumlah Stok</th>
                                 <th width="80px">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU69303"></td>
-                                <td>SKU69303</td>
-                                <td>Pita 1</td>
-                                <td>Pita</td>
-                                <td>02-May-2024</td>
-                                <td><span class="stock-badge in-stock">20 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU20061"></td>
-                                <td>SKU20061</td>
-                                <td>Pita 2</td>
-                                <td>Pita</td>
-                                <td>02-May-2024</td>
-                                <td><span class="stock-badge in-stock">50 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU87861"></td>
-                                <td>SKU87861</td>
-                                <td>Kristal 1</td>
-                                <td>Acc</td>
-                                <td>12-Jan-2024</td>
-                                <td><span class="stock-badge in-stock">100 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU21672-1"></td>
-                                <td>SKU21672</td>
-                                <td>Kristal 3</td>
-                                <td>Acc</td>
-                                <td>20-Des-2023</td>
-                                <td><span class="stock-badge out-of-stock">0 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU21672-2"></td>
-                                <td>SKU21672</td>
-                                <td>Bros</td>
-                                <td>Acc</td>
-                                <td>02-Des-2023</td>
-                                <td><span class="stock-badge in-stock">50 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU21672-3"></td>
-                                <td>SKU21672</td>
-                                <td>Jepitan</td>
-                                <td>Acc</td>
-                                <td>20-Des-2023</td>
-                                <td><span class="stock-badge in-stock">50 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU21672-4"></td>
-                                <td>SKU21672</td>
-                                <td>Karet</td>
-                                <td>Acc</td>
-                                <td>20-Des-2023</td>
-                                <td><span class="stock-badge in-stock">100 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU21672-5"></td>
-                                <td>SKU21672</td>
-                                <td>Plastik Bening</td>
-                                <td>Packing</td>
-                                <td>02-Des-2023</td>
-                                <td><span class="stock-badge in-stock">20 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU21672-6"></td>
-                                <td>SKU21672</td>
-                                <td>Plastik Packing</td>
-                                <td>Packing</td>
-                                <td>01-Des-2023</td>
-                                <td><span class="stock-badge in-stock">20 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="SKU21672-7"></td>
-                                <td>SKU21672</td>
-                                <td>Bubble Wrap</td>
-                                <td>Packing</td>
-                                <td>01-Des-2023</td>
-                                <td><span class="stock-badge out-of-stock">0 Pes</span></td>
-                                <td>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete-btn" title="Hapus">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            <% if (inventories.length===0) { %>
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 20px;">
+                                        Tidak ada Data Barang
+                                    </td>
+                                </tr>
+                                <% } else { %>
+                                    <% inventories.forEach(item=> { %>
+                                        <tr>
+                                            <td><input type="checkbox" class="row-checkbox"
+                                                    data-id="<%= item.kode_barang %>"></td>
+                                            <td>
+                                                <%= item.kode_barang %>
+                                            </td>
+                                            <td>
+                                                <%= item.nama_barang %>
+                                            </td>
+                                            <td>
+                                                <%= item.bagian %>
+                                            </td>
+                                            <td>
+                                                <%= new Date(item.tanggal_pembelian).toLocaleDateString('id-ID', {
+                                                    day: '2-digit' , month: 'short' , year: 'numeric' }) %>
+                                            </td>
+                                            <td>
+                                                <% if (item.jumlah_stok===0) { %>
+                                                    <span class="stock-badge out-of-stock">0 Pes</span>
+                                                    <% } else if (item.jumlah_stok <=5) { %>
+                                                        <span class="stock-badge out-of-stock">
+                                                            <%= item.jumlah_stok %> Pes
+                                                        </span>
+                                                        <% } else if (item.jumlah_stok <=10) { %>
+                                                            <span class="stock-badge low-stock">
+                                                                <%= item.jumlah_stok %> Pes
+                                                            </span>
+                                                            <% } else { %>
+                                                                <span class="stock-badge in-stock">
+                                                                    <%= item.jumlah_stok %> Pes
+                                                                </span>
+                                                                <% } %>
+
+                                            </td>
+                                            <td>
+                                                <button class="action-btn edit-btn" title="Edit"><i
+                                                        class="fas fa-edit"></i></button>
+                                                <button class="action-btn delete-btn" title="Hapus"><i
+                                                        class="fas fa-trash-alt"></i></button>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                            <% } %>
                         </tbody>
                     </table>
                 </div>
@@ -303,18 +208,26 @@
                 <!-- Pagination -->
                 <div class="pagination-container">
                     <div class="pagination-info">
-                        Menampilkan <span id="showing-from">1</span>-<span id="showing-to">10</span> dari <span
-                            id="total-items">15</span> item
+                        <% if (totalItems===0) { %>
+                            Menampilkan 0 dari 0 item
+                            <% } else { %>
+                                Menampilkan <span id="showing-from">
+                                    <%= showingFrom %>
+                                </span> -
+                                <span id="showing-to">
+                                    <%= showingTo %>
+                                </span> dari
+                                <span id="total-items">
+                                    <%= totalItems %>
+                                </span> item
+                                <% } %>
                     </div>
                     <div class="pagination-controls">
-                        <button class="pagination-btn" id="prev-page" disabled>
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn" id="next-page">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
+                        <% for (let i=1; i <=totalPages; i++) { %>
+                            <button class="pagination-btn <%= i === currentPage ? 'active' : '' %>">
+                                <%= i %>
+                            </button>
+                            <% } %>
                     </div>
                 </div>
 
@@ -342,7 +255,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-col">
-                <img src="./assets/logo1.jpg" alt="AkurasiKas Logo" class="footer-logo">
+                <img src="../assets/logo1.jpg" alt="AkurasiKas Logo" class="footer-logo">
                 <p class="footer-text">
                     Solusi terintegrasi untuk memantau pendapatan, pengeluaran, dan stok barang secara
                     real-time. Kami
@@ -375,9 +288,10 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 AkurasiKas | Semua Hak Dilindungi</p>
+            <p>© <%= new Date().getFullYear() %> AkurasiKas | Semua Hak Dilindungi</p>
         </div>
     </footer>
+    <div id="toast-container"></div>
 </body>
 
 </html>

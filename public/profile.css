@@ -9,13 +9,12 @@
 body {
     background-color: #f8fafc;
     color: #333;
-    line-height: 1.6;
 }
 
 .container {
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    margin: auto;
+    padding: 40px 20px;
 }
 
 /* Header */
@@ -187,6 +186,7 @@ body {
 /* Form Styles */
 .profile-form {
     flex: 1;
+    width: 850px;
 }
 
 .form-row {
@@ -240,18 +240,6 @@ input[type="tel"] {
 
 .input-with-badge input {
     flex: 1;
-}
-
-.verification-badge {
-    display: flex;
-    align-items: center;
-    color: #22c55e;
-    font-size: 0.9rem;
-    margin-left: 10px;
-}
-
-.verification-badge i {
-    margin-right: 5px;
 }
 
 .form-action {
@@ -370,7 +358,7 @@ footer {
 
 .footer-bottom {
     background-color: #111;
-    padding: 5px;
+    padding: 20px;
     font-size: 14px;
     color: white;
     text-align: center;

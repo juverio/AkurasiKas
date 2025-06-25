@@ -1,89 +1,84 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Tab functionality
     const tabs = document.querySelectorAll('.tab');
     const profileForm = document.querySelector('.profile-form');
 
     tabs.forEach(tab => {
         tab.addEventListener('click', function () {
-            // Remove active class from all tabs
             tabs.forEach(t => t.classList.remove('active'));
-
-            // Add active class to clicked tab
             this.classList.add('active');
-
-            // Get the tab name
             const tabName = this.textContent.trim();
-
-            // In a real application, you would show/hide content based on the selected tab
             console.log('Selected tab:', tabName);
-
-            // Example of showing different content based on tab
             if (tabName === 'Profil') {
                 profileForm.style.display = 'block';
             } else {
-                // For demonstration purposes, we'll just hide the form for other tabs
-                // In a real app, you would show the appropriate content for each tab
                 profileForm.style.display = 'none';
-
-                // Show a message for demonstration
                 showToast(`Tab ${tabName} dipilih`, 'info');
             }
         });
     });
 
-    // Profile image upload functionality
-    const uploadButton = document.querySelector('.btn-outline');
+    const uploadButton = document.querySelectorAll('.btn-outline')[0];
+    const deleteButton = document.querySelectorAll('.btn-outline')[1];
+    const profileImage = document.querySelector('.profile-image');
 
-    if (uploadButton && uploadButton.textContent === 'Unggah Foto') {
-        uploadButton.addEventListener('click', function () {
-            // Create a file input element
+    // === Unggah Foto ===
+    if (uploadButton && uploadButton.textContent.includes('Unggah Foto')) {
+        uploadButton.addEventListener('click', () => {
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.accept = 'image/*';
-
-            // Trigger the file input click
             fileInput.click();
 
-            // Handle file selection
-            fileInput.addEventListener('change', function () {
-                if (this.files && this.files[0]) {
-                    const file = this.files[0];
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files?.[0];
+                if (!file) return showToast('Tidak ada file yang dipilih', 'warning');
 
-                    // Create FileReader to read the file
-                    const reader = new FileReader();
+                const formData = new FormData();
+                formData.append('photo', file);
 
-                    // Set up the FileReader onload event
-                    reader.onload = function (e) {
-                        // Update the profile image with the new image
-                        const profileImage = document.querySelector('.profile-image');
-                        if (profileImage) {
-                            profileImage.src = e.target.result;
+                fetch('/profile/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(res => {
+                        if (!res.ok) throw new Error('Gagal mengunggah');
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (data.success && data.photoUrl) {
+                            profileImage.src = data.photoUrl;
+                            showToast('Foto berhasil diunggah!', 'success');
+                        } else {
+                            showToast(data.message || 'Upload gagal', 'error');
                         }
-
-                        // Show a success message
-                        showToast('Foto berhasil diupload!', 'success');
-                    };
-
-                    // Read the file as a data URL
-                    reader.readAsDataURL(file);
-                }
+                    })
+                    .catch(err => {
+                        console.error('Upload error:', err);
+                        showToast('Terjadi kesalahan saat upload', 'error');
+                    });
             });
         });
     }
 
-    // Delete photo functionality
-    const deleteButton = document.querySelectorAll('.btn-outline')[1];
-
-    if (deleteButton && deleteButton.textContent === 'Hapus Foto') {
-        deleteButton.addEventListener('click', function () {
-            // Set the profile image to a default image
-            const profileImage = document.querySelector('.profile-image');
-            if (profileImage) {
-                profileImage.src = './assets/profile-user.png';
-
-                // Show a success message
-                showToast('Foto berhasil dihapus!', 'success');
-            }
+    // === Hapus Foto ===
+    if (deleteButton && deleteButton.textContent.includes('Hapus Foto')) {
+        deleteButton.addEventListener('click', () => {
+            fetch('/profile/delete-photo', {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        profileImage.src = '/assets/profile-user.png'; // default image
+                        showToast('Foto berhasil dihapus!', 'success');
+                    } else {
+                        showToast(data.message || 'Gagal menghapus foto', 'error');
+                    }
+                })
+                .catch(err => {
+                    console.error('Delete error:', err);
+                    showToast('Terjadi kesalahan saat menghapus foto', 'error');
+                });
         });
     }
 
@@ -95,28 +90,41 @@ document.addEventListener('DOMContentLoaded', function () {
         saveButton.addEventListener('click', function (e) {
             e.preventDefault();
 
-            // Get form data
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const phone = document.getElementById('phone').value;
+            // Ambil nilai dari input name dan email
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
 
-            // Validate form data
-            if (!firstName || !lastName || !phone) {
-                showToast('Harap isi semua bidang yang diperlukan!', 'error');
+            // Validasi data input
+            if (!name || !email) {
+                showToast('Nama dan email wajib diisi!', 'error');
                 return;
             }
 
-            // Simulate form submission
-            console.log('Saving profile data:', {
-                firstName,
-                lastName,
-                phone
-            });
-
-            // Show success message
-            showToast('Profil berhasil disimpan!', 'success');
+            // Kirim data ke backend
+            fetch('/profile/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('Profil berhasil disimpan!', 'success');
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showToast(data.message || 'Gagal menyimpan profil', 'error');
+                        setTimeout(() => location.reload(), 1500);
+                    }
+                })
+                .catch(error => {
+                    console.error('Profile update error:', error);
+                    showToast('Terjadi kesalahan saat menyimpan profil', 'error');
+                });
         });
     }
+
 
     // Toggle device selection
     const deviceCheckboxes = document.querySelectorAll('.device-check input[type="checkbox"]');
@@ -588,7 +596,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
         `;
-    
+
         // CSS for left-aligned content with eye icon inside input
         const style = document.createElement('style');
         style.textContent = `
@@ -710,14 +718,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         `;
         document.head.appendChild(style);
-    
+
         // Toggle password visibility
         const togglePasswordButtons = passwordSection.querySelectorAll('.toggle-password');
         togglePasswordButtons.forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const input = this.parentElement.querySelector('input');
                 const icon = this.querySelector('i');
-                
+
                 if (input.type === 'password') {
                     input.type = 'text';
                     icon.classList.remove('fa-eye');
@@ -729,43 +737,67 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
-    
+
         // Rest of the code remains the same...
         const newPasswordInput = passwordSection.querySelector('#newPassword');
         if (newPasswordInput) {
-            newPasswordInput.addEventListener('input', function() {
+            newPasswordInput.addEventListener('input', function () {
                 checkPasswordStrength(this.value);
             });
         }
-    
+
         const savePasswordBtn = passwordSection.querySelector('#savePassword');
         if (savePasswordBtn) {
-            savePasswordBtn.addEventListener('click', function(e) {
+            savePasswordBtn.addEventListener('click', function (e) {
                 e.preventDefault();
-                
+
                 const currentPassword = document.getElementById('currentPassword').value;
                 const newPassword = document.getElementById('newPassword').value;
                 const confirmPassword = document.getElementById('confirmPassword').value;
-                
+
                 if (!currentPassword || !newPassword || !confirmPassword) {
                     showToast('Harap isi semua bidang!', 'error');
                     return;
                 }
-                
+
                 if (newPassword !== confirmPassword) {
                     showToast('Kata sandi baru dan konfirmasi tidak cocok!', 'error');
                     return;
                 }
-                
-                const strength = checkPasswordStrength(newPassword, false);
-                if (strength === 'weak') {
-                    showToast('Kata sandi terlalu lemah!', 'error');
+
+                const strength = checkPasswordStrength(newPassword, true);
+                if (strength !== 'strong') {
+                    showToast('Kata sandi belum memenuhi semua kriteria!', 'error');
                     return;
                 }
-                
-                console.log('Password changed successfully');
-                showToast('Kata sandi berhasil diubah!', 'success');
-                
+
+                fetch('/profile/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            showToast('Kata sandi berhasil diubah!', 'success');
+                            document.getElementById('currentPassword').value = '';
+                            document.getElementById('newPassword').value = '';
+                            document.getElementById('confirmPassword').value = '';
+                            checkPasswordStrength('');
+                            setTimeout(() => location.reload(), 1500);
+                        } else {
+                            showToast(data.message || 'Gagal mengubah kata sandi', 'error');
+                            setTimeout(() => location.reload(), 1500);
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Password update error:', err);
+                        showToast('Terjadi kesalahan saat mengubah kata sandi', 'error');
+                        setTimeout(() => location.reload(), 1500);
+                    });
+
                 document.getElementById('currentPassword').value = '';
                 document.getElementById('newPassword').value = '';
                 document.getElementById('confirmPassword').value = '';
@@ -773,4 +805,50 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+
+    function checkPasswordStrength(password, updateUI = true) {
+        const lengthRequirement = password.length >= 8;
+        const uppercaseRequirement = /[A-Z]/.test(password);
+        const numberRequirement = /[0-9]/.test(password);
+        const specialRequirement = /[^A-Za-z0-9]/.test(password); // karakter selain huruf & angka
+
+        const total = [lengthRequirement, uppercaseRequirement, numberRequirement, specialRequirement].filter(Boolean).length;
+
+        if (updateUI) {
+            const strengthText = document.getElementById('strengthValue');
+            const requirements = document.querySelectorAll('.password-requirements .requirement');
+
+            requirements.forEach(req => {
+                const key = req.dataset.requirement;
+                const fulfilled =
+                    (key === 'length' && lengthRequirement) ||
+                    (key === 'uppercase' && uppercaseRequirement) ||
+                    (key === 'number' && numberRequirement) ||
+                    (key === 'special' && specialRequirement);
+
+                req.classList.toggle('fulfilled', fulfilled);
+            });
+
+            // Reset strength jika input kosong
+            if (strengthText) {
+                if (password === '') {
+                    strengthText.textContent = '-';
+                    strengthText.style.color = '#6b7280';
+                } else {
+                    let label = '-';
+                    let color = '#6b7280';
+                    if (total <= 1) { label = 'Lemah'; color = '#f87171'; }
+                    else if (total === 2) { label = 'Cukup'; color = '#facc15'; }
+                    else if (total === 3) { label = 'Baik'; color = '#60a5fa'; }
+                    else if (total === 4) { label = 'Kuat'; color = '#10b981'; }
+
+                    strengthText.textContent = label;
+                    strengthText.style.color = color;
+                }
+            }
+        }
+
+        return total === 4 ? 'strong' : 'weak';
+    }
+
 });

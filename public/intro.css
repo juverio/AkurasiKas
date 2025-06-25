@@ -130,6 +130,37 @@ button:hover {
     text-decoration: underline;
 }
 
+.toast-message {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #ff4d4f;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        font-size: 14px;
+        z-index: 9999;
+        animation: fadein 0.3s ease, fadeout 0.3s ease 4.7s;
+    }
+
+    .toast-message i {
+        margin-right: 8px;
+        font-size: 18px;
+    }
+
+    @keyframes fadein {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeout {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
 /* Responsive Design */
 @media (max-width: 480px) {
     .container {
@@ -152,4 +183,36 @@ button:hover {
     .form-link {
         font-size: 13px;
     }
+}
+
+.password-strength {
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+
+.strength-text {
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+
+.password-requirements {
+  list-style: none;
+  padding-left: 20px;
+  margin: 0;
+  color: #6b7280;
+}
+
+.password-requirements li::before {
+  content: '⛔';
+  margin-right: 5px;
+  color: #f87171;
+}
+
+.password-requirements li.fulfilled::before {
+  content: '✅';
+  color: #10b981;
+}
+
+.password-requirements li.fulfilled {
+  color: #10b981;
 }

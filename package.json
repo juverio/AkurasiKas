@@ -14,8 +14,10 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
+    "exceljs": "^4.4.0",
     "express": "^4.21.0",
     "express-session": "^1.18.1",
+    "multer": "^2.0.1",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7"
   }

@@ -19,103 +19,164 @@
     <div class="form signup">
       <div class="form-content">
         <header>Daftar</header>
-        <form id="signupForm" action="/signup" method="POST">
+        <form id="signupForm" action="/auth/register" method="POST">
           <div class="field input-field">
-            <input type="email" name="email" placeholder="Email" class="input" required>
+            <input type="text" name="name" placeholder="Nama Lengkap" class="input" required />
           </div>
           <div class="field input-field">
-            <input type="password" name="password" placeholder="Buat Kata Sandi" class="input password" required>
-            <i class='bx bx-hide eye-icon'></i>
+            <input type="email" name="email" placeholder="Email" class="input" required />
           </div>
           <div class="field input-field">
-            <input type="password" name="confirmPassword" placeholder="Konfirmasi Kata Sandi" class="input password"
-              required>
-            <i class='bx bx-hide eye-icon'></i>
+            <input type="password" name="password" id="passwordInput" placeholder="Buat Kata Sandi"
+              class="input password" required />
+            <i class="bx bx-hide eye-icon"></i>
+          </div>
+          <div class="password-strength" id="passwordStrength">
+            <p class="strength-text">Kekuatan kata sandi: <span id="strengthValue">-</span></p>
+            <ul class="password-requirements">
+              <li class="requirement" data-requirement="length">Minimal 8 karakter</li>
+              <li class="requirement" data-requirement="uppercase">Mengandung huruf besar</li>
+              <li class="requirement" data-requirement="number">Mengandung angka</li>
+              <li class="requirement" data-requirement="special">Mengandung karakter khusus</li>
+            </ul>
+          </div>
+          <br>
+          <div class="field input-field">
+            <input type="password" name="confirm_password" placeholder="Konfirmasi Kata Sandi" class="input password"
+              required />
+            <i class="bx bx-hide eye-icon"></i>
           </div>
           <div class="field button-field">
             <button type="submit">Daftar</button>
           </div>
         </form>
         <div class="form-link">
-          <span>Sudah memiliki akun? <a href="/login" class="link">Login</a></span>
+          <span>Sudah memiliki akun? <a href="/auth/login" class="link">Login</a></span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- JavaScript -->
+  <div id="toast-container"></div>
+
+  <!-- Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const forms = document.querySelector(".forms");
-      const pwShowHide = document.querySelectorAll(".eye-icon");
-      const loginForm = document.querySelector('.form.login form');
-      const signupForm = document.querySelector('.form.signup form');
-      const links = document.querySelectorAll(".link");
+  document.addEventListener('DOMContentLoaded', () => {
+    const pwShowHide = document.querySelectorAll(".eye-icon");
+    const signupForm = document.getElementById('signupForm');
+    const passwordInput = signupForm.querySelector('input[name="password"]');
 
-      // Fungsi untuk toggle visibilitas password
-      const togglePasswordVisibility = (icon) => {
-        const passwordField = icon.previousElementSibling; // Ambil input sebelum ikon
-        if (passwordField.type === "password") {
-          passwordField.type = "text"; // Tampilkan password
-          icon.classList.replace("bx-hide", "bx-show");
-        } else {
-          passwordField.type = "password"; // Sembunyikan password
-          icon.classList.replace("bx-show", "bx-hide");
-        }
-      };
-
-      // Event listener untuk setiap ikon mata
-      pwShowHide.forEach(icon => {
-        icon.addEventListener("click", () => togglePasswordVisibility(icon));
-      });
-
-      // Fungsi untuk mengirim data formulir ke server
-      const handleFormSubmission = async (form, url, successRedirect) => {
-        try {
-          const formData = new FormData(form);
-          const response = await fetch(url, {
-            method: 'POST',
-            body: formData
-          });
-
-          if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status}`);
-          }
-
-          const result = await response.json();
-
-          if (result.success) {
-            window.location.href = successRedirect; // Redirect jika berhasil
-          } else {
-            alert(result.message || "Terjadi kesalahan."); // Tampilkan pesan dari server
-          }
-        } catch (error) {
-          console.error("Error during form submission:", error);
-          alert("Gagal mengirim data. Periksa koneksi internet Anda.");
-        }
-      };
-
-      // Event listener untuk login form
-      loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        handleFormSubmission(loginForm, '/login', '/dashboard');
-      });
-
-      // Event listener untuk signup form
-      signupForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        handleFormSubmission(signupForm, '/signup', '/dashboard');
-      });
-
-      // Fungsi untuk toggle antara form login dan signup
-      links.forEach(link => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          forms.classList.toggle("show-signup");
-        });
+    // 👁 Toggle show/hide password
+    pwShowHide.forEach(icon => {
+      icon.addEventListener("click", () => {
+        const input = icon.previousElementSibling;
+        input.type = input.type === "password" ? "text" : "password";
+        icon.classList.toggle("bx-show");
+        icon.classList.toggle("bx-hide");
       });
     });
-  </script>
-</body>
 
+    // ✅ Password strength check saat mengetik
+    passwordInput.addEventListener('input', () => {
+      checkPasswordStrengthLive(passwordInput.value);
+    });
+
+    // ✅ Toast function
+    const showToast = (message, color = '#ff4d4f') => {
+      const toast = document.createElement('div');
+      toast.className = 'toast-message';
+      toast.style.backgroundColor = color;
+      toast.innerHTML = `<i class='bx bx-error-circle'></i> ${message}`;
+      document.getElementById('toast-container').appendChild(toast);
+      setTimeout(() => toast.remove(), 5000);
+    };
+
+    // ✅ Submit form
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(signupForm);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+        confirm_password: formData.get('confirm_password')
+      };
+
+      // 🔒 Cek kekuatan password
+      const isStrong = checkPasswordStrengthLive(data.password);
+      if (!isStrong) {
+        showToast('Kata sandi belum memenuhi semua kriteria keamanan!', '#ff4d4f');
+        passwordInput.focus();
+        return;
+      }
+
+      if (data.password !== data.confirm_password) {
+        showToast('Konfirmasi kata sandi tidak cocok!', '#ff4d4f');
+        return;
+      }
+
+      try {
+        const response = await axios.post(signupForm.action, data);
+        if (response.data.success) {
+          showToast("Pendaftaran berhasil! Mengarahkan ke pemilihan role...", '#52c41a');
+          setTimeout(() => {
+            window.location.href = '/auth/login';
+          }, 1500);
+        } else {
+          showToast(response.data.message || "Terjadi kesalahan.");
+        }
+      } catch (error) {
+        const msg = error.response?.data?.message || 'Gagal mendaftar. Silakan coba lagi.';
+        showToast(msg);
+      }
+    });
+
+    // ✅ Fungsi validasi kekuatan password (updated)
+    function checkPasswordStrengthLive(password) {
+      const strengthValue = document.getElementById('strengthValue');
+      const requirementItems = document.querySelectorAll('.password-requirements .requirement');
+
+      // Jika kosong, reset semua
+      if (!password || password.trim() === '') {
+        strengthValue.textContent = '-';
+        strengthValue.style.color = '#6b7280';
+        requirementItems.forEach(req => req.classList.remove('fulfilled'));
+        return false;
+      }
+
+      const requirements = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        number: /[0-9]/.test(password),
+        special: /[^A-Za-z0-9]/.test(password),
+      };
+
+      // Update UI
+      requirementItems.forEach(req => {
+        const key = req.dataset.requirement;
+        if (requirements[key]) {
+          req.classList.add('fulfilled');
+        } else {
+          req.classList.remove('fulfilled');
+        }
+      });
+
+      // Hitung kekuatan
+      const total = Object.values(requirements).filter(Boolean).length;
+      let label = '-', color = '#6b7280';
+      if (total <= 1) { label = 'Lemah'; color = '#f87171'; }
+      else if (total <= 3) { label = 'Cukup'; color = '#facc15'; }
+      else if (total === 4) { label = 'Kuat'; color = '#10b981'; }
+
+      strengthValue.textContent = label;
+      strengthValue.style.color = color;
+
+      return total === 4;
+    }
+  });
+</script>
+</body>
 </html>

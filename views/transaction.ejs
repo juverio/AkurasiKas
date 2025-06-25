@@ -20,18 +20,18 @@
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="logo">
-                <img src="./assets/logo1.jpg" alt="Akurasikas Logo">
+                <img src="/assets/logo1.jpg" alt="Akurasikas Logo">
             </div>
             <nav>
-                <a href="/dashboard">
+                <a href="/user/dashboard">
                     <i class="fas fa-home"></i>
                     Dashboard
                 </a>
-                <a href="/transaction" class="active">
+                <a href="/type/transaction" class="active">
                     <i class="fas fa-exchange-alt"></i>
                     Transaksi
                 </a>
-                <a href="/inventori">
+                <a href="/inventori/inventory">
                     <i class="fas fa-box"></i>
                     Inventori
                 </a>
@@ -69,14 +69,18 @@
                     <div class="user-profile" id="user-profile">
                         <img src="/assets/profile-user.png" alt="User Avatar">
                         <div>
-                            <p class="username">Vinte</p>
-                            <p class="role">Akunting</p>
+                            <p class="username">
+                                <%= user.name %>
+                            </p>
+                            <p class="role">
+                                <%= user.role %>
+                            </p>
                         </div>
 
                         <!-- Dropdown Menu -->
                         <div class="profile-dropdown-menu">
                             <a href="/profile"><i class="fas fa-user"></i> Profil</a>
-                            <a href="/"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+                            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
                         </div>
                     </div>
                 </div>
@@ -85,12 +89,18 @@
                 <!-- Transaction Filter Section -->
                 <div class="transaction-controls">
                     <div class="transaction-type">
+                        <!-- Dropdown Label -->
                         <button class="btn-primary dropdown-toggle">
-                            Pembelian <i class="fas fa-caret-down"></i>
+                            <%= selectedType==='penjualan' ? 'Penjualan' : 'Pembelian' %> <i
+                                    class="fas fa-caret-down"></i>
                         </button>
+
+                        <!-- Dropdown Items -->
                         <div class="dropdown-menu">
-                            <a href="#">Pembelian</a>
-                            <a href="#">Penjualan</a>
+                            <a href="/type/transaction?type=pembelian"
+                                class="<%= selectedType === 'pembelian' ? 'active' : '' %>">Pembelian</a>
+                            <a href="/type/transaction?type=penjualan"
+                                class="<%= selectedType === 'penjualan' ? 'active' : '' %>">Penjualan</a>
                         </div>
                     </div>
 
@@ -98,24 +108,24 @@
                         <div class="filter-buttons">
                             <button class="btn-icon"><i class="fas fa-filter"></i></button>
                         </div>
-                        <div class="date-inputs">
+                        <form class="date-inputs" method="get" action="/type/transaction">
                             <div class="date-field">
-                                <input type="date" placeholder="dd/mm/yyyy" class="date-input">
+                                <input type="date" name="startDate" class="date-input" value="<%= startDate || '' %>">
                                 <i class="fas fa-calendar-alt"></i>
                             </div>
                             <span class="date-separator">-</span>
                             <div class="date-field">
-                                <input type="date" placeholder="dd/mm/yyyy" class="date-input">
+                                <input type="date" name="endDate" class="date-input" value="<%= endDate || '' %>">
                                 <i class="fas fa-calendar-alt"></i>
                             </div>
-                        </div>
+                        </form>
                     </div>
 
                     <div class="action-buttons">
                         <button class="btn-secondary">
                             <i class="fas fa-download"></i> Unduh
                         </button>
-                        <button class="btn-primary">
+                        <button class="btn-primary" id="btn-tambah-transaksi">
                             <i class="fas fa-plus"></i> Transaksi
                         </button>
                     </div>
@@ -132,114 +142,72 @@
                                 <th>Nama</th>
                                 <th>Nilai Transaksi</th>
                                 <th>Status Pengiriman <i class="fas fa-sort"></i></th>
-                                <th class="action-col"></th>
+                                <th class="action-col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT69303</td>
-                                <td>02-May-2024</td>
-                                <td>Toko Pita 1</td>
-                                <td>Rp 45.000</td>
-                                <td><span class="status on-the-way">On The Way</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT20061</td>
-                                <td>02-May-2024</td>
-                                <td>Toko Pita 1</td>
-                                <td>Rp 35.000</td>
-                                <td><span class="status problem">Problem</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
-                            <tr class="selected-row">
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT87861</td>
-                                <td>01-May-2024</td>
-                                <td>Toko Pita 1</td>
-                                <td>Rp 106.000</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
-                            <tr class="selected-row">
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT21672</td>
-                                <td>01-May-2024</td>
-                                <td>Toko Manik 1</td>
-                                <td>Rp 223.000</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
-                            <tr class="selected-row">
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT21672</td>
-                                <td>01-May-2024</td>
-                                <td>Toko Manik 1</td>
-                                <td>Rp 55.000</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
-                            <tr class="selected-row">
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT21672</td>
-                                <td>01-May-2024</td>
-                                <td>Import China</td>
-                                <td>Rp 55.000</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
-                            <tr class="selected-row">
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT21672</td>
-                                <td>01-May-2024</td>
-                                <td>Import China</td>
-                                <td>Rp 55.000</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
-                            <tr class="selected-row">
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT21672</td>
-                                <td>01-May-2024</td>
-                                <td>Aling</td>
-                                <td>Rp 55.000</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
-                            <tr class="selected-row">
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT21672</td>
-                                <td>01-May-2024</td>
-                                <td>Aling</td>
-                                <td>Rp 55.000</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
-                            <tr class="selected-row">
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>JT21672</td>
-                                <td>01-May-2024</td>
-                                <td>Toko Pita 2</td>
-                                <td>Rp 55.000</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                                <td><i class="fas fa-ellipsis-v action-menu"></i></td>
-                            </tr>
+                            <% if (transaksiList.length===0) { %>
+                                <tr>
+                                    <td colspan="7" style="text-align:center;">
+                                        Tidak ada Data Transaksi <%= selectedType==='penjualan' ? 'Penjualan'
+                                            : 'Pembelian' %>
+                                    </td>
+                                </tr>
+                                <% } else { %>
+                                    <% transaksiList.forEach(trx=> { %>
+                                        <tr>
+                                            <td><input type="checkbox" class="row-checkbox"></td>
+                                            <td>
+                                                <% if (selectedType==='penjualan' ) { %>
+                                                    <%= trx.Penjualan?.transaksi_id || '-' %>
+                                                        <% } else { %>
+                                                            <%= trx.Pembelian?.transaksi_id || '-' %>
+                                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <%= trx.tanggal ? new Date(trx.tanggal).toLocaleDateString('id-ID')
+                                                    : '-' %>
+                                            </td>
+                                            <td>
+                                                <%= selectedType === 'penjualan' ? (trx.Penjualan?.nama || '-') : (trx.Pembelian?.nama || '-') %>
+                                            </td>
+                                            <td>
+                                                Rp <%= trx.jumlah ? parseFloat(trx.jumlah).toLocaleString('id-ID') : '0'
+                                                    %>
+                                            </td>
+                                            <td>
+                                                <% let status=selectedType==='penjualan' ?
+                                                    trx.Penjualan?.status_pengiriman : trx.Pembelian?.status_pengiriman;
+                                                    %>
+                                                    <span
+                                                        class="status <%= status ? status.toLowerCase().replace(/\s+/g, '-') : '' %>">
+                                                        <%= status || '-' %>
+                                                    </span>
+                                            </td>
+                                            <td class="btn-action">
+                                                <button class="btn-detail" data-id="<%= trx.transaksi_id %>"><i
+                                                        class="fas fa-info-circle"></i></button>
+                                                <button class="btn-edit" data-id="<%= trx.transaksi_id %>"><i
+                                                        class="fas fa-edit"></i></button>
+                                                <button class="btn-status" data-id="<%= trx.transaksi_id %>"><i
+                                                        class="fas fa-truck"></i></button>
+                                                <button class="btn-delete" data-id="<%= trx.transaksi_id %>"><i
+                                                        class="fas fa-trash-alt"></i></button>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                            <% } %>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pagination -->
                 <div class="pagination">
-                    <button class="pagination-arrow"><i class="fas fa-chevron-left"></i></button>
-                    <button class="pagination-number active">1</button>
-                    <button class="pagination-number">2</button>
-                    <button class="pagination-number">3</button>
-                    <button class="pagination-number">4</button>
-                    <button class="pagination-number">5</button>
-                    <button class="pagination-number">6</button>
-                    <button class="pagination-arrow"><i class="fas fa-chevron-right"></i></button>
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                        <a href="?page=<%= i %>" class="pagination-number <%= currentPage === i ? 'active' : '' %>">
+                            <%= i %>
+                        </a>
+                        <% } %>
                 </div>
             </main>
         </div>
@@ -249,11 +217,10 @@
     <footer>
         <div class="footer-content">
             <div class="footer-col">
-                <img src="./assets/logo1.jpg" alt="AkurasiKas Logo" class="footer-logo">
+                <img src="/assets/logo1.jpg" alt="AkurasiKas Logo" class="footer-logo">
                 <p class="footer-text">
                     Solusi terintegrasi untuk memantau pendapatan, pengeluaran, dan stok barang secara
-                    real-time. Kami
-                    menyediakan manajemen keuangan yang lebih baik dengan data akurat, tanpa kerumitan.
+                    real-time. Kami menyediakan manajemen keuangan yang lebih baik dengan data akurat, tanpa kerumitan.
                 </p>
             </div>
             <div class="footer-col">
@@ -282,7 +249,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 AkurasiKas | Semua Hak Dilindungi</p>
+            <p>© <%= new Date().getFullYear() %> AkurasiKas | Semua Hak Dilindungi</p>
         </div>
     </footer>
 </body>
